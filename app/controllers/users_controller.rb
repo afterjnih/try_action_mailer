@@ -28,12 +28,17 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        UserMailer.welcome_email(@user).deliver_later
+        m = UserMailer.welcome_email(@user)
+        # m.content_transfer_encoding = '8bit'
+        # m.transport_encoding = '8bit'
+        # raise()
+        # m.text_part.add_content_transfer_encoding
+        m.deliver_later
         format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        # format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        # format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
